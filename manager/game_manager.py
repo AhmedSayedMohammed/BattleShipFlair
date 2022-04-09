@@ -27,8 +27,7 @@ class GameManager:
         # convert ship json to BattleShip object
         ships_list = []
         for ship in ships:
-            current_ship = BattleShip(ship)
-            ships_list.append(current_ship)
+            ships_list.append(BattleShip(ship))
         self.ships = ships_list
 
     def end_game(self):

@@ -17,12 +17,8 @@ class BattleShip:
         self.size = ship_json['size']
         self.direction = ship_json['direction']
         if direction == "V":
-            self.point1.x = x
-            self.point1.y = y
-            self.point2.x = x
-            self.point2.y = y + size
+            self.point1 = Point(x, y)
+            self.point2 = Point(x, y + size)
         if direction == "H":
-            self.point1.x = x
-            self.point1.y = y
-            self.point2.x = x + size
-            self.point2.y = y
+            self.point1 = Point(x, y)
+            self.point2 = Point(x + size, y)
