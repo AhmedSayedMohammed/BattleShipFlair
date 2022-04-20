@@ -1,24 +1,45 @@
-from math_calculations.math_2d import Point
+from math_calculations.math_2d import Point, Line, Rectangle
+from enum import Enum
+
+
+class ShipStatus(Enum):
+    Floating = 1
+    HIT = 2
+    SINK = 3
 
 
 class BattleShip:
-    point1 = Point(0, 0)
-    point2 = Point(0, 0)
-    size = int()
-    direction = str()
-    status = ""
+    def __init__(self, x, y, direction, size, status: ShipStatus):
+        self.x = x
+        self.y = y
+        self.size = size
+        self.status = status
+        self.direction = direction
 
-    def __init__(self, ship_json):
-        x = int(ship_json['x'])
-        y = int(ship_json['y'])
+    def get_current_ship_body_position(self) -> Line:
+        if self.direction == "V":
+            point1 = Point(self.x, self.y)
+            point2 = Point(self.x, self.y + self.size)
+            return Line(point1, point2)
+        if self.direction == "H":
+            point1 = Point(self.x, self.y)
+            point2 = Point(self.x + self.size, self.y)
+            return Line(point1, point2)
 
-        size = int(ship_json['size'])
-        direction = ship_json['direction']
-        self.size = ship_json['size']
-        self.direction = ship_json['direction']
-        if direction == "V":
-            self.point1 = Point(x, y)
-            self.point2 = Point(x, y + size)
-        if direction == "H":
-            self.point1 = Point(x, y)
-            self.point2 = Point(x + size, y)
+
+    def get_current_ship_body_positions(self) -> Rectangle:
+        if self.direction == "V":
+            point1 = Point(self.x+self.size, self.y+self.size)
+            point2 = Point(self.x, self.y + self.size)
+            return Line(point1, point2)
+        if self.direction == "H":
+            point1 = Point(self.x, self.y)
+            point2 = Point(self.x + self.size, self.y)
+            return Line(point1, point2)
+
+    def set_status(self, status: ShipStatus):
+        self.status = status
+        pass
+
+    def get_status(self) -> ShipStatus:
+        return self.status

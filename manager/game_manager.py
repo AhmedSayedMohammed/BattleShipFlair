@@ -1,8 +1,11 @@
-from math_calculations.math_2d import Point
-from model.battle_ship import BattleShip
+from math_calculations.math_2d import Point, Rectangle, Line
+from model.battle_ship import BattleShip, ShipStatus
 
-h_dimension = Point(0, 9)
-v_dimension = Point(0, 9)
+h_line1 = Line(Point(0, 0), Point(9, 0))
+h_line2 = Line(Point(0, 9), Point(9, 9))
+v_line1 = Line(Point(0, 0), Point(0, 9))
+v_line2 = Line(Point(9, 0), Point(9, 9))
+game_border = Rectangle(h_line1, h_line2, v_line1, v_line2)
 
 
 class GameManager:
@@ -24,11 +27,7 @@ class GameManager:
         return GameManager.__instance__
 
     def start_game(self, ships):
-        # convert ship json to BattleShip object
-        ships_list = []
-        for ship in ships:
-            ships_list.append(BattleShip(ship))
-        self.ships = ships_list
+        self.ships = ships
 
     def end_game(self):
         self.__instance__ = None

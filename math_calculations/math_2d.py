@@ -9,6 +9,20 @@ class Point:
         self.y = y
 
 
+class Line:
+    def __init__(self, point1: Point, point2: Point):
+        self.point1 = point1
+        self.point2 = point2
+
+
+class Rectangle:
+    def __init__(self, horizontal_line1: Line, horizontal_line2: Line, vertical_line1: Line, vertical_line2: Line):
+        self.horizontal_line1 = horizontal_line1
+        self.horizontal_line2 = horizontal_line2
+        self.vertical_line1 = vertical_line1
+        self.vertical_line2 = vertical_line2
+
+
 # Given three collinear points p, q, r, the function checks if
 # point q lies on line segment 'pr'
 def onSegment(p, q, r):
@@ -43,8 +57,12 @@ def orientation(p, q, r):
         return 0
 
 
-def doIntersect(p1, q1, p2, q2):
+def do_intersect(line1: Line, line2: Line):
     # Find the 4 orientations required for
+    p1 = line1.point1
+    q1 = line1.point2
+    p2 = line2.point1
+    q2 = line2.point2
     # the general and special cases
     o1 = orientation(p1, q1, p2)
     o2 = orientation(p1, q1, q2)
@@ -93,17 +111,43 @@ def is_between(a, b, c):
     if abs(crossproduct) > float_info.epsilon:
         return False
 
-    dotproduct = (c.x - a.x) * (b.x - a.x) + (c.y - a.y)*(b.y - a.y)
+    dotproduct = (c.x - a.x) * (b.x - a.x) + (c.y - a.y) * (b.y - a.y)
     if dotproduct < 0:
         return False
 
-    squaredlengthba = (b.x - a.x)*(b.x - a.x) + (b.y - a.y)*(b.y - a.y)
+    squaredlengthba = (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y)
     if dotproduct > squaredlengthba:
         return False
 
     return True
 
+
+def point_regards_line(point: Point, line: Line):
+    v1 = (line.point2.x - line.point1.x, line.point2.y - line.point1.y)  # Vector 1
+    v2 = (line.point2.x - point.x, line.point2.y - point.y)  # Vector 2
+    xp = v1[0] * v2[1] - v1[1] * v2[0]  # Cross product
+    if xp > 0:
+        return 1
+    elif xp < 0:
+        return -1
+    else:
+        return 0
+
+
 def is_equal_point(point1, point2):
     if point1.x == point2.x and point1.y == point2.y:
         return True
+    return False
+
+
+def line_inside_rectangle(line: Line, rect: Rectangle):
+    if point_inside_rectangle(line.point1, rect) and point_inside_rectangle(line.point2, rect):
+        return True
+    return False
+
+
+def point_inside_rectangle(point: Point, rect: Rectangle):
+    if rect.horizontal_line1.point1.x < point.x < rect.horizontal_line2.point2.x:
+        if rect.vertical_line1.point1.y < point.y < rect.vertical_line2.point2.y:
+            return True
     return False

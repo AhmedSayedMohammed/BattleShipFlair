@@ -1,6 +1,9 @@
 import http
 import unittest
 from unittest import mock
+
+from manager.game_manager import game_border
+
 ships = [
     {
         "x": 2,
@@ -54,7 +57,7 @@ class TestSampleClass(unittest.TestCase):
         self.assertEqual(response, http.HTTPStatus.BAD_REQUEST)
 
     def test_shot(self):
-        response = self.physics.check_shot_hits_ship(shot, self.gm.ships)
+        response = self.physics.check_shot_hits_ship(shot, self.gm.ships, game_border)
         self.assertEqual(response, {"result": "WATER"})
 
     def test_delete_battleship_game(self):
